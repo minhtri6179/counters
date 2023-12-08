@@ -13,7 +13,7 @@ describe('Running test', () => {
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
     });
-    server = app.listen(3000);
+    server = app.listen(3030);
   });
   
   afterAll(done => {
@@ -46,9 +46,14 @@ describe('Running test', () => {
   });
   
   describe('GET /count', () => {
-    it('responds with count of records in the table', async () => {
+    it('responds with count of records in the table more than 0', async () => {
       const response = await request(app).get('/count');
       expect(parseInt(response.text)).toBeGreaterThanOrEqual(0);
+    });
+
+    it('responds with 0 when counting out-of-range value', async () => {
+      const response = await request(app).get('/count?value=6');
+      expect(parseInt(response.text)).toBe(0);
     });
   });
 });

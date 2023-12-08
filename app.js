@@ -51,7 +51,8 @@ app.post('/count', async (req, res, next) => {
 // Get Count
 app.get('/count', async (req, res, next) => {
   try {
-    const result = await pool.query('SELECT COUNT(*) FROM counters');
+    const value = req.query.value;
+    const result = await pool.query('SELECT COUNT(*) FROM counters WHERE count = $1', [value]);
     res.send(result.rows[0].count);
   } catch (err) {
     next(err); // Pass the error to the error handling middleware
