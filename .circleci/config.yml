@@ -1,10 +1,12 @@
 version: 2.1
-
+orbs:
+  node: circleci/node@5.0.2
+  postgresql: circleci/postgresql@1.1.0
 jobs:    
   test:
     docker:
       - image: circleci/node:14
-      - image: cimg/postgres:14.0
+      - image: circleci/postgresql:9.6.2-alpine
         environment:
           POSTGRES_USER: root
           POSTGRES_DB: counters
