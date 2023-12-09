@@ -76,8 +76,3 @@ workflows:
     jobs:
       - linter 
       - build_and_test
-      - coverity_scan:
-          requires:
-            - build_and_test
-
-    
