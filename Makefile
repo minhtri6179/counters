@@ -9,4 +9,10 @@ createdb:
 dropdb:
 	docker exec -it postgres12 dropdb counters
 
-.PHONY: postgres createdb dropdb
+migrateup:
+	psql counters < create_table.sql
+
+test:
+	npm run test
+
+.PHONY: postgres createdb dropdb migrateup test
