@@ -1,16 +1,32 @@
 version: 2.1
-orbs:
-  node: circleci/node@5.0.2
 
 jobs:
   build_and_test:
-    executor: node/default
+    docker:
+      - image: cimg/node:12.16.1
+        environment:
+          DB_URL: postgresql://root:secret@localhost:5432/counters?sslmode=disable
+
+      - image: cimg/postgres:12.17
+        environment:
+          POSTGRES_USER: root
+          POSTGRES_DB: counters
+          POSTGRES_PASSWORD: secret
     steps:
       - checkout
+      - run: sudo apt-get update
+      - run: sudo apt-get install postgresql-client
+      - run:
+          name: Setup DB
+          environment:
+            TERM: xterm
+          command: psql -q -d $DB_URL -f create_table.sql
       - node/install-packages:
           pkg-manager: npm
       - run:
           command: npm run test
+          environment:
+            DB_URL: postgresql://root:secret@localhost:5432/counters?sslmode=disable
           name: Run tests
       - run:
           command: npm run build
