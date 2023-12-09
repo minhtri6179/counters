@@ -25,14 +25,14 @@ jobs:
       - run: npm run test
     working_directory: ~/app
 
-    lint:
-      docker:
-        - image: circleci/node:14
-      steps:
-        - checkout
-        - run: npm install
-        - run: npm run lint
-      working_directory: ~/app
+  lint:
+    docker:
+      - image: circleci/node:14
+    steps:
+      - checkout
+      - run: npm install
+      - run: npm run lint
+    working_directory: ~/app
 
 workflows:
   test_my_app:
