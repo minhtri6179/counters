@@ -21,7 +21,7 @@ jobs:
       - run: |
           psql \
           -d $DB_URL \
-          -f create_table.sql
+          -c "CREATE TABLE test (name char(25));"
       - run: npm install
       - run: npm run test
     working_directory: ~/app
