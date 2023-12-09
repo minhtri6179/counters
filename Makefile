@@ -10,9 +10,12 @@ dropdb:
 	docker exec -it postgres12 dropdb counters
 
 migrateup:
-	psql counters < create_table.sql
+	psql -h localhost -U root -d counters < create_table.sql
 
 test:
 	npm run test
+
+lint:
+	npm run lint
 
 .PHONY: postgres createdb dropdb migrateup test
