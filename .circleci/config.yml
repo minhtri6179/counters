@@ -6,9 +6,10 @@ jobs:
       - image: cimg/node:21.4.0
         environment:
           NODE_ENV: test
-          PG_USER: root 
-          PG_DATABASE: counters
-          PG_PORT: 5432
+          PGHOST: localhost
+          PGUSER: root 
+          PGDATABASE: counters
+          PGPORT: 5432
           DATABASE_URL: "postgresql://root:secret@localhost:5432/counters?sslmode=disable"
       # CircleCI PostgreSQL images available at: https://circleci.com/developer/images/image/cimg/postgres
       - image: postgres:12
@@ -40,9 +41,8 @@ jobs:
           environment: # environment variables for the database url and path to migration files
             CONTACTS_DB_URL: "postgresql://root:secret@localhost:5432/counters?sslmode=disable"
           command: |
-            ls
-            pwd
-            psql -h localhost -U root -d counters -f create_table.sql
+            psql -h localhost -U root -d counters < create_table.sql
+            psql -h localhost -U root -c "SELECT * FROM counters"
             make test | tee ${TEST_RESULTS}/test.out
 
       - store_artifacts:
