@@ -73,10 +73,6 @@ jobs:
     steps:
       - checkout
       - run: 
-          name: Install packages
-          command: |
-              npm install
-      - run: 
           name: Run coverity scan
           command: |
               make coverage
@@ -86,6 +82,8 @@ workflows:
     jobs:
       - linter 
       - build_and_test
-      - coverity_scan
+      - coverity_scan:
+          requires:
+            - build_and_test
 
     
