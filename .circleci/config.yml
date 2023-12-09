@@ -5,12 +5,14 @@ jobs:
     docker:
       - image: cimg/node:21.4.0
         environment:
+          NODE_ENV: test
+          PG_USER: root 
+          PG_DATABASE: counters
+          PG_PORT: 5432
           DATABASE_URL: "postgresql://root:secret@localhost:5432/counters?sslmode=disable"
       # CircleCI PostgreSQL images available at: https://circleci.com/developer/images/image/cimg/postgres
       - image: postgres:12
         environment:
-          PGHOST: localhost
-          PGUSER: root
           POSTGRES_USER: root
           POSTGRES_PASSWORD: secret
           POSTGRES_DB: counters
