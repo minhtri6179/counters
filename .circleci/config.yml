@@ -15,11 +15,6 @@ jobs:
           POSTGRES_PASSWORD: secret
           POSTGRES_DB: counters
           POSTGRES_HOST_AUTH_METHOD: trust
-        options: 
-          --health-cmd pg_isready 
-          --health-interval 10s 
-          --health-timeout 5s 
-          --health-retries 5
 
     environment:
       TEST_RESULTS: /tmp/test-results
@@ -43,7 +38,7 @@ jobs:
           environment: # environment variables for the database url and path to migration files
             CONTACTS_DB_URL: "postgresql://root:secret@localhost:5432/counters?sslmode=disable"
           command: |
-            make migrateup
+            psql -h localhost -U root -d counters -f create_table.sql
             make test | tee ${TEST_RESULTS}/test.out
 
       - store_artifacts:
