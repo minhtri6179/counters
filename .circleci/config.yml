@@ -1,7 +1,29 @@
 version: 2.1
 
 jobs:
-  build:
+  linter:
+    docker:
+      - image: cimg/node:21.4.0
+
+    steps:
+      - checkout
+      - run:
+          name: Install linter
+          command: |
+            npm install -g eslint
+            npm install -g eslint-config-airbnb-base
+            npm install -g eslint-plugin-import
+            npm install -g eslint-plugin-jest
+            npm install -g eslint-plugin-node
+            npm install -g eslint-plugin-promise
+            npm install -g eslint-plugin-standard
+            npm install -g eslint-plugin-import
+            npm install -g eslint-plugin-import
+            npm install -g eslint-plugin-import
+            npm
+      - run: make lint
+      
+  build_and_test:
     docker:
       - image: cimg/node:21.4.0
         environment:
@@ -54,5 +76,7 @@ jobs:
 workflows:
   main:
     jobs:
-      - build
+      - linter 
+      - build_and_test
+
     
