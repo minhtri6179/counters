@@ -59,24 +59,18 @@ jobs:
             make migrateup
             make test | tee ${TEST_RESULTS}/test.out
 
+      - run: 
+          name: Run coverity scan
+          command: |
+              make coverage
+
       - store_artifacts:
           path: /tmp/test-results
           destination: raw-test-output
 
       - store_test_results:
           path: /tmp/test-results
-
-  coverity_scan:
-    docker:
-      - image: cimg/node:21.4.0
-
-    steps:
-      - checkout
-      - run: 
-          name: Run coverity scan
-          command: |
-              make coverage
-
+      
 workflows:
   main:
     jobs:
