@@ -38,7 +38,8 @@ jobs:
           environment: # environment variables for the database url and path to migration files
             CONTACTS_DB_URL: "postgresql://root:secret@localhost:5432/counters?sslmode=disable"
           command: |
-            psql -h localhost -U root -d counters -f create_table.sql
+            cat create_table.sql 
+            psql -f create_table.sql
             make test | tee ${TEST_RESULTS}/test.out
 
       - store_artifacts:
