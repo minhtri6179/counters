@@ -23,7 +23,7 @@ jobs:
       - run: |
           psql \
           -d $DB_URL \
-          -f create_tables.sql
+          -f create_table.sql
       - run: npm install
       - run: npm run test
     working_directory: ~/app
