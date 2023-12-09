@@ -4,13 +4,15 @@ jobs:
   test:
     docker:
       - image: cimg/node:21.4.0
+        environment:
+          DB_URL: postgresql://root:secret@localhost:5432/counters?sslmode=disable
       - image: cimg/postgres:14.0
         environment:
           POSTGRES_USER: root
           POSTGRES_DB: counters
           POSTGRES_PASSWORD: secret
           POSTGRES_HOST_AUTH_METHOD: trust
-          DB_URL: postgresql://root:secret@localhost:5432/counters?sslmode=disable
+          
 
     steps:
       - checkout
