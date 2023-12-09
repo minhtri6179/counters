@@ -4,12 +4,17 @@ jobs:
   build:
     docker:
       - image: cimg/node:21.4.0
+        environment:
+          DATABASE_URL: "postgresql://root:secret@localhost:5432/counters?sslmode=disable"
       # CircleCI PostgreSQL images available at: https://circleci.com/developer/images/image/cimg/postgres
       - image: cimg/postgres:14.0
         environment:
+          PGHOST: localhost
+          PGUSER: root
           POSTGRES_USER: root
           POSTGRES_PASSWORD: secret
           POSTGRES_DB: counters
+          POSTGRES_HOST_AUTH_METHOD: trust
 
     environment:
       TEST_RESULTS: /tmp/test-results
@@ -42,3 +47,8 @@ jobs:
 
       - store_test_results:
           path: /tmp/test-results
+
+workflows:
+  main:
+    jobs:
+      - build
