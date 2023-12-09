@@ -8,6 +8,7 @@ jobs:
       - image: cimg/postgres:14.0
         environment:
           POSTGRES_USER: root
+          POSTGRES_PASSWORD: secret
           POSTGRES_DB: counters
 
     environment:
