@@ -19,11 +19,11 @@ jobs:
       - run: sudo rm -rf /var/lib/apt/lists/*
       - run: sudo apt-get update
       - run: sudo apt-get install postgresql-client -y
-      - run: pwd
+      - run: ls
       - run: |
           psql \
           -d $DB_URL \
-          -c "CREATE TABLE test (name char(25));"
+          -f create_tables.sql
       - run: npm install
       - run: npm run test
     working_directory: ~/app
