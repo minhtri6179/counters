@@ -3,46 +3,40 @@ orbs:
   node: circleci/node@5.0.2
 
 jobs:
-  build_and_test:
+  build: 
     docker:
-      - image: cimg/node:12.16.1
-        environment:
-          DB_URL: postgresql://root:secret@localhost:5432/counters?sslmode=disable
+       - image: circleci/node:14
+    steps:
+       - checkout
+       - run: npm install
+       - run: npm run build
+    working_directory: ~/app
 
-      - image: cimg/postgres:12.17
-        environment:
-          POSTGRES_USER: root
-          POSTGRES_DB: counters
-          POSTGRES_PASSWORD: secret
-
+  test:
+     docker:
+       - image: circleci/node:14
+     steps:
+       - checkout
+       - run: npm install
+       - run: npm run test
+     working_directory: ~/app
+    
+  lint:
+    docker:
+      - image: circleci/node:14
     steps:
       - checkout
-      - run: sudo apt-get update
-      - run: sudo apt-get install postgresql-client -y
-      - run:
-          name: Setup DB
-          environment:
-            TERM: xterm
-          command: psql -q -d $DB_URL -f create_table.sql
-      - node/install-packages:
-          pkg-manager: npm
-      - run:
-          command: npm run test
-          environment:
-            DB_URL: postgresql://root:secret@localhost:5432/counters?sslmode=disable
-          name: Run tests
-      - run:
-          command: npm run build
-          name: Build app
-      - run:
-          command: npm run lint
-          name: Lint code
-      - persist_to_workspace:
-          root: ~/project
-          paths:
-            - .
+      - run: npm install
+      - run: npm run lint
+    working_directory: ~/app
 
 workflows:
   test_my_app:
     jobs:
-      - build_and_test
+      - build
+      - test:
+          requires:
+            - build
+      - lint:
+          requires:
+            - build
