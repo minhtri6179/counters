@@ -1,17 +1,6 @@
 version: 2.1
-orbs:
-  node: circleci/node@5.0.2
 
 jobs:    
-  lint:
-    docker:
-      - image: circleci/node:14
-    steps:
-      - checkout
-      - run: npm install
-      - run: npm run lint
-    working_directory: ~/app
-
   test:
     docker:
       - image: circleci/node:14
@@ -36,9 +25,17 @@ jobs:
       - run: npm run test
     working_directory: ~/app
 
+    lint:
+      docker:
+        - image: circleci/node:14
+      steps:
+        - checkout
+        - run: npm install
+        - run: npm run lint
+      working_directory: ~/app
+
 workflows:
   test_my_app:
     jobs:
-      - lint
-
       - test
+      - lint
