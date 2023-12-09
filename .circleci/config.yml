@@ -66,20 +66,20 @@ jobs:
       - store_test_results:
           path: /tmp/test-results
 
-    coverity_scan:
-      docker:
-        - image: cimg/node:21.4.0
+  coverity_scan:
+    docker:
+      - image: cimg/node:21.4.0
 
-      steps:
-        - checkout
-        - run: 
-            name: Install packages
-            command: |
-                npm install
-        - run: 
-            name: Run coverity scan
-            command: |
-                make coverage
+    steps:
+      - checkout
+      - run: 
+          name: Install packages
+          command: |
+              npm install
+      - run: 
+          name: Run coverity scan
+          command: |
+              make coverage
 
 workflows:
   main:
