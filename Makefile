@@ -18,4 +18,7 @@ test:
 lint:
 	npm run lint
 
-.PHONY: postgres createdb dropdb migrateup test
+coverage:
+	npm run coverage
+
+.PHONY: postgres createdb dropdb migrateup test lint coverage
