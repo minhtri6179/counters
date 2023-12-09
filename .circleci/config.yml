@@ -13,13 +13,28 @@ jobs:
     working_directory: ~/app
 
   test:
-     docker:
-       - image: circleci/node:14
-     steps:
-       - checkout
-       - run: npm install
-       - run: npm run test
-     working_directory: ~/app
+    docker:
+      - image: circleci/node:14
+      - image: circleci/postgres:12.8
+        environment:
+          POSTGRES_USER: root
+          POSTGRES_DB: counters
+          POSTGRES_PASSWORD: secret
+          POSTGRES_HOST_AUTH_METHOD: trust
+          DB_URL: postgresql://root:secret@localhost:5432/counters?sslmode=disable
+
+    steps:
+      - checkout
+      - run: sudo apt-get update
+      - run: sudo apt-get install postgresql-client -y
+      - run: pwd
+      - run: |
+          psql \
+          -d $TEST_DATABASE_URL \
+          -f create_table.sql
+      - run: npm install
+      - run: npm run test
+    working_directory: ~/app
 
 workflows:
   test_my_app:
