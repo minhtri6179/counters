@@ -20,7 +20,7 @@ jobs:
       - run: pwd
       - run: |
           psql \
-          -d $TEST_DATABASE_URL \
+          -d $DB_URL \
           -f create_table.sql
       - run: npm install
       - run: npm run test
