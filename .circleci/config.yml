@@ -14,11 +14,11 @@ jobs:
           POSTGRES_USER: root
           POSTGRES_DB: counters
           POSTGRES_PASSWORD: secret
-          
+
     steps:
       - checkout
       - run: sudo apt-get update
-      - run: sudo apt-get install postgresql-client
+      - run: sudo apt-get install postgresql-client -y
       - run:
           name: Setup DB
           environment:
