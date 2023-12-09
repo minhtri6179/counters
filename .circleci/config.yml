@@ -7,7 +7,7 @@ jobs:
         environment:
           DATABASE_URL: "postgresql://root:secret@localhost:5432/counters?sslmode=disable"
       # CircleCI PostgreSQL images available at: https://circleci.com/developer/images/image/cimg/postgres
-      - image: cimg/postgres:14.0
+      - image: postgres:12
         environment:
           PGHOST: localhost
           PGUSER: root
@@ -15,6 +15,11 @@ jobs:
           POSTGRES_PASSWORD: secret
           POSTGRES_DB: counters
           POSTGRES_HOST_AUTH_METHOD: trust
+        options: 
+          --health-cmd pg_isready 
+          --health-interval 10s 
+          --health-timeout 5s 
+          --health-retries 5
 
     environment:
       TEST_RESULTS: /tmp/test-results
