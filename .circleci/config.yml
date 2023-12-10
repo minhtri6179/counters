@@ -35,13 +35,12 @@ jobs:
           NODE_ENV: test
           PGHOST: $PGHOST
           PGUSER: $PGUSER 
-          PGDATABASE: $PGDATABASE
-          PGPORT: $PGPORT
+
       - image: postgres:12
         environment:
-          POSTGRES_USER: root
-          POSTGRES_PASSWORD: secret
-          POSTGRES_DB: counters
+          POSTGRES_USER: ${POSTGRES_USER}
+          POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+          POSTGRES_DB: ${POSTGRES_DB}
           POSTGRES_HOST_AUTH_METHOD: trust
 
     environment:
