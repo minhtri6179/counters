@@ -29,14 +29,17 @@ jobs:
               make lint
 
   build_and_test:
+    environment:
+      TEST_RESULTS: /tmp/test-results
     docker:
       - image: cimg/node:21.4.0
 
       - image: postgres:12
-      
-    environment:
-      TEST_RESULTS: /tmp/test-results
-
+        environment:
+          POSTGRES_USER: root 
+          POSTGRES_PASSWORD: secret
+          POSTGRES_DB: counters
+          POSTGRES_HOST_AUTH_METHOD: trust
     steps:
       - checkout
       - run: mkdir -p $TEST_RESULTS
@@ -52,6 +55,8 @@ jobs:
 
       - run:
           name: Run unit tests
+          environment: # environment variables for the database url and path to migration files
+            CONTACTS_DB_URL: $CONTACTS_DB_URL
           command: |
             make migrateup
             make test | tee ${TEST_RESULTS}/test.out
