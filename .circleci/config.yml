@@ -82,7 +82,7 @@ jobs:
           name: Publish Docker Image to Docker Hub
           command: |
             echo "$DOCKERHUB_PASSWORD" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
-            cp $DOTENV_STAGE .env
+            echo $DOTENV_STAGE > .env
             ls 
             cat .env
             docker build -t $IMAGE_NAME .
