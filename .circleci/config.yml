@@ -49,6 +49,8 @@ jobs:
     steps:
       - checkout
       - run: mkdir -p $TEST_RESULTS
+      - run: echo ${POSTGRES_DB} 
+      - run: echo $POSTGRES_DB
 
       - run:
           name: Install dependencies
