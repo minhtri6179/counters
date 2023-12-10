@@ -18,5 +18,15 @@
     "test": "jest --verbose --forceExit",
     "coverage": "jest --watchAll=false --coverage --forceExit",
     "lint": "eslint ."
+  },
+  "jest":{
+    "coverageThreshold": {
+       "global": {
+         "branches": 70,
+         "functions": 75,
+         "lines": 85,
+         "statements": 85
+       }
+    }
   }
 }
