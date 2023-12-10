@@ -116,9 +116,10 @@ workflows:
           type: approval
           requires:
             - push_image_to_registry
-          filters:
-            branches:
-              only: master
+      - deploy_to_production:
+          requires:
+            - hold
+          
       - deploy_to_production:
           requires:
             - hold
