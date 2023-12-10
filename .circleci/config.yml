@@ -115,5 +115,5 @@ workflows:
       - build_and_test
       - push_image_to_registry:
           requires:
-            - lint
+            - linter
             - build_and_test
