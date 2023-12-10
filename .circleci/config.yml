@@ -112,9 +112,16 @@ workflows:
           requires:
             - linter
             - build_and_test
-      - deploy_to_production:
+      - hold:
+          type: approval
           requires:
             - push_image_to_registry
+          filters:
+            branches:
+              only: master
+      - deploy_to_production:
+          requires:
+            - hold
           filters:
             branches:
               only: master
