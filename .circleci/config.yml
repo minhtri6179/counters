@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
- docker: circleci/docker@1.5.0
+  docker: circleci/docker@1.5.0
 executors:
   docker-publisher: 
     environment:
@@ -78,6 +78,13 @@ jobs:
     executor: docker-publisher
     steps: 
       - checkout
+      - env: 
+          name: Create env file 
+          command: |
+            echo $DOTENV_STAGE > .env
+            echo $DOCKERHUB_USERNAME > .env
+            echo $DOCKERHUB_PASSWORD > .env
+            cat .env
       - setup_remote_docker
       - run: 
           name: Publish Docker Image to Docker Hub
