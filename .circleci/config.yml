@@ -13,7 +13,7 @@ executors:
             password: $DOCKERHUB_PASSWORD
 
 jobs:
-  linter:
+  run_linter:
     docker:
       - image: cimg/node:21.4.0
 
@@ -95,10 +95,6 @@ jobs:
     steps:
       - checkout
       - run: 
-          name: Install dependencies
-          command: |
-              npm install
-      - run: 
           name: Deploy
           command: |
               curl $DEPLOY_HOOKS
@@ -106,20 +102,19 @@ jobs:
 workflows:
   main:
     jobs:
-      - linter 
+      - run_linter 
       - build_and_test
+
       - push_image_to_registry:
           requires:
-            - linter
+            - run_linter
             - build_and_test
+
       - hold:
           type: approval
           requires:
             - push_image_to_registry
-      - deploy_to_production:
-          requires:
-            - hold
-          
+
       - deploy_to_production:
           requires:
             - hold
