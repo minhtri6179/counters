@@ -33,8 +33,8 @@ jobs:
       - image: cimg/node:21.4.0
         environment:
           NODE_ENV: test
-          PGHOST: $PGHOST
-          PGUSER: $PGUSER 
+          PGHOST: localhost
+          PGUSER: root 
 
       - image: postgres:12
         environment:
