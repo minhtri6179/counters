@@ -1,5 +1,17 @@
 version: 2.1
 
+orbs:
+ docker: circleci/docker@1.5.0
+executors:
+  docker-publisher: 
+    environment:
+      IMAGE_NAME: minhtri6179/counters
+    docker: 
+      - image: circleci/node:latest
+        auth:
+            username: $DOCKERHUB_USERNAME
+            password: $DOCKERHUB_PASSWORD
+
 jobs:
   linter:
     docker:
@@ -8,7 +20,7 @@ jobs:
     steps:
       - checkout
       - run: 
-          name: Install packages
+          name: Install dependencies
           command: |
               npm install
       - run: 
@@ -25,8 +37,6 @@ jobs:
           PGUSER: root 
           PGDATABASE: counters
           PGPORT: 5432
-          DATABASE_URL: "postgresql://root:secret@localhost:5432/counters?sslmode=disable"
-      # CircleCI PostgreSQL images available at: https://circleci.com/developer/images/image/cimg/postgres
       - image: postgres:12
         environment:
           POSTGRES_USER: root
@@ -42,7 +52,7 @@ jobs:
       - run: mkdir -p $TEST_RESULTS
 
       - run:
-          name: Get dependencies
+          name: Install dependencies
           command: |
             npm install
 
@@ -70,9 +80,40 @@ jobs:
 
       - store_test_results:
           path: /tmp/test-results
-      
+  
+  push_image_to_registry: 
+    executor: docker-publisher
+    steps: 
+      - checkout
+      - setup_remote_docker
+      - run: 
+          name: Publish Docker Image to Docker Hub
+          command: |
+            echo "$DOCKERHUB_PASSWORD" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
+            docker build -t $IMAGE_NAME .
+            docker push $IMAGE_NAME:latest
+  
+  deploy:
+    docker:
+      - image: cimg/node:21.4.0
+
+    steps:
+      - checkout
+      - run: 
+          name: Install dependencies
+          command: |
+              npm install
+      - run: 
+          name: Deploy
+          command: |
+              make deploy
+
 workflows:
   main:
     jobs:
       - linter 
       - build_and_test
+      - push_image_to_registry:
+          requires:
+            - lint
+            - build_and_test
