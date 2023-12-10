@@ -31,14 +31,6 @@ jobs:
   build_and_test:
     docker:
       - image: cimg/node:21.4.0
-        environment:
-          NODE_ENV: test
-          PGHOST: localhost
-          PGUSER: root 
-          PGPASSWORD: secret
-          PGDATABASE: counters
-          PGPORT: 5432
-          
 
       - image: postgres:12
         environment:
@@ -46,7 +38,6 @@ jobs:
           POSTGRES_PASSWORD: secret
           POSTGRES_DB: counters
           POSTGRES_HOST_AUTH_METHOD: trust
-
 
     environment:
       TEST_RESULTS: /tmp/test-results
