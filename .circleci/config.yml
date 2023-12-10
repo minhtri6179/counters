@@ -35,6 +35,8 @@ jobs:
       - image: cimg/node:21.4.0
 
       - image: cimg/postgres:12.17
+        environment:
+          POSTGRES_USER: root
 
     steps:
       - checkout
