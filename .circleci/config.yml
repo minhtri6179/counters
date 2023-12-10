@@ -54,8 +54,6 @@ jobs:
 
       - run:
           name: Run unit tests
-          environment: # environment variables for the database url and path to migration files
-            CONTACTS_DB_URL: $CONTACTS_DB_URL
           command: |
             make migrateup
             make test | tee ${TEST_RESULTS}/test.out
