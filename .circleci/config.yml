@@ -53,16 +53,7 @@ jobs:
       - run:
           name: Waiting for Postgres to be ready
           command: dockerize -wait tcp://localhost:5432 -timeout 1m
-      - run: 
-          name: Create env file 
-          command: |
-            echo DB_HOST="$DB_HOST" >> .env
-            echo DB_USER="$DB_USER" >> .env
-            echo DB_PASSWORD="$DB_PASSWORD" >> .env
-            echo DB_NAME="$DB_NAME" >> .env
-            echo HOST="$HOST" >> .env
-            echo PORT="$PORT" >> .env
-            cat .env
+
       - run:
           name: Run unit tests
           environment: # environment variables for the database url and path to migration files
@@ -88,6 +79,20 @@ jobs:
     steps: 
       - checkout
       - setup_remote_docker
+      - run: 
+          name: Create env file 
+          command: |
+              echo DB_HOST="$DB_HOST" >> .env
+              echo DB_USER="$DB_USER" >> .env
+              echo DB_PASSWORD="$DB_PASSWORD" >> .env
+              echo DB_NAME="$DB_NAME" >> .env
+              echo HOST="$HOST" >> .env
+              echo PORT="$PORT" >> .env
+              cat .env
+      - run: 
+          name: TESTING
+          command: |
+              cat .env
       - run: 
           name: Publish Docker Image to Docker Hub
           command: |
@@ -116,15 +121,18 @@ workflows:
           requires:
             - run_linter
             - build_and_test
-
-      - hold:
-          type: approval
-          requires:
-            - push_image_to_registry
-          filters:
-            branches:
-              only: master
-
       - deploy_to_production:
           requires:
-            - hold
+            - push_image_to_registry
+
+      # - hold:
+      #     type: approval
+      #     requires:
+      #       - push_image_to_registry
+      #     filters:
+      #       branches:
+      #         only: master
+
+      # - deploy_to_production:
+      #     requires:
+      #       - hold
