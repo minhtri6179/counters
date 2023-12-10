@@ -62,6 +62,7 @@ jobs:
             CONTACTS_DB_URL: $CONTACTS_DB_URL
           command: |
             echo $POSTGRES_USER
+            echo $asdsad
             make migrateup
             make test | tee ${TEST_RESULTS}/test.out
 
