@@ -33,9 +33,7 @@ jobs:
       - image: cimg/node:21.4.0
 
       - image: postgres:12
-        environment:
-          POSTGRES_HOST_AUTH_METHOD: trust
-
+      
     environment:
       TEST_RESULTS: /tmp/test-results
 
