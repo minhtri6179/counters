@@ -56,9 +56,12 @@ jobs:
       - run: 
           name: Create env file 
           command: |
-            echo $DOTENV_STAGE > .env
-            echo $DOCKERHUB_USERNAME > .env
-            echo $DOCKERHUB_PASSWORD > .env
+            echo DB_HOST="$DB_HOST" >> .env
+            echo DB_USER="$DB_USER" >> .env
+            echo DB_PASSWORD="$DB_PASSWORD" >> .env
+            echo DB_NAME="$DB_NAME" >> .env
+            echo HOST="$HOST" >> .env
+            echo PORT="$PORT" >> .env
             cat .env
       - run:
           name: Run unit tests
@@ -89,8 +92,6 @@ jobs:
           name: Publish Docker Image to Docker Hub
           command: |
             echo "$DOCKERHUB_PASSWORD" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
-            echo $DOTENV_STAGE > .env
-            ls -la
             docker build -t $IMAGE_NAME .
             docker push $IMAGE_NAME:latest
   
