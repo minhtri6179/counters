@@ -39,9 +39,9 @@ jobs:
           PGPORT: $PGPORT
       - image: postgres:12
         environment:
-          POSTGRES_USER: $POSTGRES_USER
-          POSTGRES_PASSWORD: $POSTGRES_PASSWORD
-          POSTGRES_DB: $POSTGRES_DB
+          POSTGRES_USER: $PGUSER
+          POSTGRES_PASSWORD: secret
+          POSTGRES_DB: $PGDATABASE
           POSTGRES_HOST_AUTH_METHOD: trust
 
     environment:
