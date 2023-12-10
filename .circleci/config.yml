@@ -101,7 +101,7 @@ jobs:
       - run: 
           name: Deploy
           command: |
-              make deploy
+              curl $DEPLOY_HOOKS
 
 workflows:
   main:
@@ -112,3 +112,9 @@ workflows:
           requires:
             - linter
             - build_and_test
+      - deploy_to_production:
+          requires:
+            - push_image_to_registry
+          filters:
+            branches:
+              only: master

@@ -1,4 +1,5 @@
 DB_URL=postgresql://root:secret@localhost:5432/counters?sslmode=disable
+REMOTE_DB_URL=postgres://root:scift7NgCjLaFlRcVILEzL5sepJXgnAp@dpg-clqu29ie9h4c73aq94a0-a.singapore-postgres.render.com/counters_fmgc
 
 postgres:
 	docker run --name postgres12 -p 5432:5432 -e POSTGRES_USER=root -e POSTGRES_PASSWORD=secret -d postgres:12-alpine
@@ -12,6 +13,18 @@ dropdb:
 migrateup:
 	psql -h localhost -U root -d counters < create_table.sql
 
+migratescriptup:
+	migrate -path db/migration -database "${DB_URL}" -verbose up
+
+migratescriptdown:
+	migrate -path db/migration -database "${DB_URL}" -verbose down
+
+migrateupremote:
+	migrate -path db/migration -database "${REMOTE_DB_URL}" -verbose up
+
+migratedownremote:
+	migrate -path db/migration -database "${REMOTE_DB_URL}" -verbose down
+
 test:
 	npm run test
 
@@ -21,4 +34,4 @@ lint:
 coverage:
 	npm run coverage
 
-.PHONY: postgres createdb dropdb migrateup test lint coverage
+.PHONY: postgres createdb dropdb migrateup migratescriptup migratescriptdown test lint coverage

@@ -12,9 +12,6 @@ RUN npm install
 # Bundle app source
 COPY . .
 
-RUN ls -la 
-RUN cd /app && ls -la
-
 EXPOSE 8000
 
 CMD [ "npm", "start" ]
