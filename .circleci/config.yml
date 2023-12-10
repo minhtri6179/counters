@@ -33,10 +33,10 @@ jobs:
       - image: cimg/node:21.4.0
         environment:
           NODE_ENV: test
-          PGHOST: 127.0.0.1
-          PGUSER: root 
-          PGDATABASE: counters
-          PGPORT: 5432
+          PGHOST: $PGHOST
+          PGUSER: $PGUSER 
+          PGDATABASE: $PGDATABASE
+          PGPORT: $PGPORT
       - image: postgres:12
         environment:
           POSTGRES_USER: root
