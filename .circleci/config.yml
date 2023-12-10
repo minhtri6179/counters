@@ -34,9 +34,12 @@ jobs:
     docker:
       - image: cimg/node:21.4.0
 
-      - image: cimg/postgres:12.17
+      - image: postgres:12.17
         environment:
-          POSTGRES_USER: root
+          POSTGRES_USER: root 
+          POSTGRES_PASSWORD: secret
+          POSTGRES_DB: counters
+          POSTGRES_HOST_AUTH_METHOD: trust
 
     steps:
       - checkout
