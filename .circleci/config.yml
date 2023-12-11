@@ -34,13 +34,6 @@ jobs:
     docker:
       - image: cimg/node:21.4.0
 
-      - image: postgres:12.17
-        environment:
-          POSTGRES_USER: root 
-          POSTGRES_PASSWORD: secret
-          POSTGRES_DB: counters
-          POSTGRES_HOST_AUTH_METHOD: trust
-
     steps:
       - checkout
       - run: mkdir -p $TEST_RESULTS
@@ -88,7 +81,6 @@ jobs:
               echo DB_NAME="$DB_NAME" >> .env
               echo HOST="$HOST" >> .env
               echo PORT="$PORT" >> .env
-              cat .env
       - run: 
           name: TESTING
           command: |
