@@ -70,7 +70,7 @@ jobs:
       - checkout
       - setup_remote_docker
       - run: 
-          name: Create env file for production deployment
+          name: Create secret env file for production deployment
           command: |
               echo DB_HOST="$DB_HOST_P" >> .env
               echo DB_USER="$DB_USER_P" >> .env
@@ -78,12 +78,9 @@ jobs:
               echo DB_NAME="$DB_NAME_P" >> .env
               echo HOST="$HOST" >> .env
               echo PORT="$PORT" >> .env
+
       - run: 
-          name: TESTING
-          command: |
-              cat .env
-      - run: 
-          name: Publish Docker Image to Docker Hub
+          name: Publish Docker Image to Docker Hub Registry
           command: |
             echo "$DOCKERHUB_PASSWORD" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
             docker build -t $IMAGE_NAME .
@@ -96,7 +93,7 @@ jobs:
     steps:
       - checkout
       - run: 
-          name: Deploy
+          name: Run deploy hooks to trigger run latest image
           command: |
               curl $DEPLOY_HOOKS
 
@@ -110,18 +107,15 @@ workflows:
           requires:
             - run_linter
             - build_and_test
-      - deploy_to_production:
+
+      - hold:
+          type: approval
           requires:
             - push_image_to_registry
+          filters:
+            branches:
+              only: master
 
-      # - hold:
-      #     type: approval
-      #     requires:
-      #       - push_image_to_registry
-      #     filters:
-      #       branches:
-      #         only: master
-
-      # - deploy_to_production:
-      #     requires:
-      #       - hold
+      - deploy_to_production:
+          requires:
+            - hold
