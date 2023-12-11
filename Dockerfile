@@ -12,6 +12,7 @@ RUN npm install
 # Bundle app source
 COPY . .
 
+# Expose port 8000 to the outside world
 EXPOSE 8000
 
 CMD [ "npm", "start" ]
