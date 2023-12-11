@@ -28,8 +28,6 @@ jobs:
           command: |
               make lint
   
-  # So all configuration for this job just for testing
-  # No security concern with these variable
   build_and_test:
     environment:
       TEST_RESULTS: /tmp/test-results
