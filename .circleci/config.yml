@@ -27,19 +27,14 @@ jobs:
           name: Run Linter
           command: |
               make lint
-              
+  
+  # So all configuration for this job just for testing
+  # No security concern with these variable
   build_and_test:
     environment:
       TEST_RESULTS: /tmp/test-results
     docker:
       - image: cimg/node:21.4.0
-
-      - image: postgres:12
-        environment:
-          POSTGRES_USER: root 
-          POSTGRES_PASSWORD: secret
-          POSTGRES_DB: counters
-          POSTGRES_HOST_AUTH_METHOD: trust
 
     steps:
       - checkout
@@ -49,10 +44,6 @@ jobs:
           name: Install dependencies
           command: |
             npm install
-      #  Wait for Postgres to be ready before proceeding
-      - run:
-          name: Waiting for Postgres to be ready
-          command: dockerize -wait tcp://localhost:5432 -timeout 1m
 
       - run:
           name: Run unit tests
