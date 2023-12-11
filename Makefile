@@ -24,6 +24,12 @@ migrateupremote:
 migratedownremote:
 	migrate -path db/migration -database "${REMOTE_DB_URL}" -verbose down
 
+migrateupprod:
+	migrate -path db/migration -database "${REMOTE_DB_URL_P}" -verbose up
+
+migratedownprod:
+	migrate -path db/migration -database "${REMOTE_DB_URL_P}" -verbose down
+
 test:
 	npm run test
 
@@ -33,4 +39,4 @@ lint:
 coverage:
 	npm run coverage
 
-.PHONY: postgres createdb dropdb migrateup migratescriptup migratescriptdown test lint coverage
+.PHONY: postgres createdb dropdb migrateup migratescriptup migratescriptdown test lint coverage migrateupprod migratedownprod migrateupremote migratedownprod

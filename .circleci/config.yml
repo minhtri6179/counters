@@ -28,7 +28,6 @@ jobs:
           command: |
               make lint
               
-
   build_and_test:
     environment:
       TEST_RESULTS: /tmp/test-results
@@ -81,12 +80,12 @@ jobs:
       - checkout
       - setup_remote_docker
       - run: 
-          name: Create env file 
+          name: Create env file for production deployment
           command: |
-              echo DB_HOST="$DB_HOST" >> .env
-              echo DB_USER="$DB_USER" >> .env
-              echo DB_PASSWORD="$DB_PASSWORD" >> .env
-              echo DB_NAME="$DB_NAME" >> .env
+              echo DB_HOST="$DB_HOST_P" >> .env
+              echo DB_USER="$DB_USER_P" >> .env
+              echo DB_PASSWORD="$DB_PASSWORD_P" >> .env
+              echo DB_NAME="$DB_NAME_P" >> .env
               echo HOST="$HOST" >> .env
               echo PORT="$PORT" >> .env
       - run: 
