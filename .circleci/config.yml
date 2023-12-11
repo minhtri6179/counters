@@ -27,6 +27,7 @@ jobs:
           name: Run Linter
           command: |
               make lint
+              
 
   build_and_test:
     environment:
